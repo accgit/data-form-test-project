@@ -23,23 +23,13 @@ final class WebPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
-	/** @var UserRepository */
-	private $userRepository;
+	private UserRepository $userRepository;
+	private AddressRepository $addressRepository;
+	private CountryRepository $countryRepository;
 
-	/** @var AddressRepository */
-	private $addressRepository;
-
-	/** @var CountryRepository */
-	private $countryRepository;
-
-	/** @var UserEntity */
-	private $userEntity;
-
-	/** @var AddressEntity */
-	private $addressEntity;
-
-	/** @var CountryEntity */
-	private $countryEntity;
+	private UserEntity $userEntity;
+	private AddressEntity $addressEntity;
+	private CountryEntity $countryEntity;
 
 
 	public function __construct(
