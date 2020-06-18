@@ -1,0 +1,13 @@
+# nette extensions
+extensions:
+	dibi: Dibi\Bridges\Nette\DibiExtension22
+
+
+# database connection
+dibi:
+	host: 127.0.0.1
+	username: accgit
+	password: root
+	database: nette
+	driver: mysqli
+	lazy: true
