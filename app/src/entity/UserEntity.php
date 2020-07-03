@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-final class UserEntity extends \Drago\Utils\ExtraArrayHash
+final class UserEntity extends \Drago\Database\Entity
 {
 	use \Nette\SmartObject;
 

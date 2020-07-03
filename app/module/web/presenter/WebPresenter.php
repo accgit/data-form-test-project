@@ -45,14 +45,22 @@ final class WebPresenter extends Presenter
 	protected function createComponentForm()
 	{
 		$form = new Form;
-		$form->addText(UserData::NAME, 'name');
+		$form->addText(UserData::NAME, 'name')
+			->addRule(Form::MAX_LENGTH, null, UserData::NAME_LENGTH);
+
+		/* Address container ---------------------------------------------------------------------------------------- */
 
 		$address = $form->addContainer('address');
 		$address->addText(AddressData::STREET, 'street')
 			->addRule(Form::MAX_LENGTH, null, AddressData::STREET_LENGTH);
 
-		$address->addText(AddressData::CITY, 'city');
-		$address->addInteger(AddressData::ZIP, 'zip');
+		$address->addText(AddressData::CITY, 'city')
+			->addRule(Form::MAX_LENGTH, null, AddressData::CITY_LENGTH);
+
+		$address->addInteger(AddressData::ZIP, 'zip')
+			->addRule(Form::MAX_LENGTH, null, AddressData::ZIP_LENGTH);
+
+		/* country items -------------------------------------------------------------------------------------------- */
 
 		/** @var CountryEntity $item */
 		foreach ($this->countryRepository->all()->fetchAll() as $item)
@@ -60,6 +68,8 @@ final class WebPresenter extends Presenter
 			$items[$item->countryId] = $item->name;
 			$this->countryItems = $items;
 		}
+
+		/* country container ---------------------------------------------------------------------------------------- */
 
 		$country = $address->addContainer('country');
 		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems);
