@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d6891c34ee6a0398ec07b28daaef5e6",
+    "content-hash": "508a13bcaed2118f6ca5a5062ede09df",
     "packages": [
         {
             "name": "dg/composer-cleaner",
@@ -119,24 +119,24 @@
         },
         {
             "name": "drago-ex/bootstrap",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drago-ex/bootstrap.git",
-                "reference": "8607c433c290aaadab719814249dc2c9397e7ea3"
+                "reference": "6221a541438bf2f41ebb2700ba4c96c31e8750f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drago-ex/bootstrap/zipball/8607c433c290aaadab719814249dc2c9397e7ea3",
-                "reference": "8607c433c290aaadab719814249dc2c9397e7ea3",
+                "url": "https://api.github.com/repos/drago-ex/bootstrap/zipball/6221a541438bf2f41ebb2700ba4c96c31e8750f1",
+                "reference": "6221a541438bf2f41ebb2700ba4c96c31e8750f1",
                 "shasum": ""
             },
             "require": {
                 "nette/application": "^3.0",
                 "nette/bootstrap": "^3.0",
                 "nette/caching": "^3.0",
-                "nette/utils": "^3.0",
-                "php": ">=7.1"
+                "nette/utils": "^3.1",
+                "php": ">=7.4"
             },
             "require-dev": {
                 "nette/tester": "^2.3",
@@ -159,30 +159,26 @@
                     "homepage": "https://github.com/accgit"
                 }
             ],
-            "description": "Basic configuration for applications.",
-            "time": "2020-06-16T10:46:31+00:00"
+            "description": "Basic configuration for Nette Framework",
+            "time": "2020-06-23T07:31:39+00:00"
         },
         {
             "name": "drago-ex/database",
-            "version": "v1.0.2",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drago-ex/database.git",
-                "reference": "3d144ee0c61dc6479b311c828750a7c8f185e59b"
+                "reference": "5b140d4a1bdd8b8b52f596f8b12389714d0ee0c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drago-ex/database/zipball/3d144ee0c61dc6479b311c828750a7c8f185e59b",
-                "reference": "3d144ee0c61dc6479b311c828750a7c8f185e59b",
+                "url": "https://api.github.com/repos/drago-ex/database/zipball/5b140d4a1bdd8b8b52f596f8b12389714d0ee0c5",
+                "reference": "5b140d4a1bdd8b8b52f596f8b12389714d0ee0c5",
                 "shasum": ""
             },
             "require": {
-                "dibi/dibi": "^4.0",
-                "drago-ex/utils": "^1.0",
-                "php": ">=7.1"
-            },
-            "replace": {
-                "drago-fw/database": "self.version"
+                "dibi/dibi": "^4.1",
+                "php": ">=7.4"
             },
             "require-dev": {
                 "nette/bootstrap": "^3.0",
@@ -206,31 +202,28 @@
                     "homepage": "https://github.com/accgit"
                 }
             ],
-            "description": "Connect and work with the database.",
-            "time": "2020-06-18T07:32:56+00:00"
+            "description": "Connecting to database for Nette Framework",
+            "time": "2020-06-24T05:20:35+00:00"
         },
         {
             "name": "drago-ex/translator",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drago-ex/translator.git",
-                "reference": "86b69a7149e7a8122084df66409ed885e8a5fe00"
+                "reference": "4c8f46dd9754adc041f0c6a022800725df7909bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drago-ex/translator/zipball/86b69a7149e7a8122084df66409ed885e8a5fe00",
-                "reference": "86b69a7149e7a8122084df66409ed885e8a5fe00",
+                "url": "https://api.github.com/repos/drago-ex/translator/zipball/4c8f46dd9754adc041f0c6a022800725df7909bb",
+                "reference": "4c8f46dd9754adc041f0c6a022800725df7909bb",
                 "shasum": ""
             },
             "require": {
                 "nette/application": "^3.0",
                 "nette/di": "^3.0",
-                "nette/utils": "^3.0",
-                "php": ">=7.1"
-            },
-            "replace": {
-                "drago-fw/translator": "self.version"
+                "nette/utils": "^3.1",
+                "php": ">=7.4"
             },
             "require-dev": {
                 "nette/bootstrap": "^3.0",
@@ -254,26 +247,26 @@
                     "homepage": "https://github.com/accgit"
                 }
             ],
-            "description": "Simple translator.",
-            "time": "2020-06-15T10:04:55+00:00"
+            "description": "Simple translator for Nette Framework",
+            "time": "2020-06-23T08:10:10+00:00"
         },
         {
             "name": "drago-ex/utils",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drago-ex/utils.git",
-                "reference": "585ab94637322837a9c75ae65347bf52159732e8"
+                "reference": "9e621f2844bb4480e4429bf83b3a6fafca82e6c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drago-ex/utils/zipball/585ab94637322837a9c75ae65347bf52159732e8",
-                "reference": "585ab94637322837a9c75ae65347bf52159732e8",
+                "url": "https://api.github.com/repos/drago-ex/utils/zipball/9e621f2844bb4480e4429bf83b3a6fafca82e6c6",
+                "reference": "9e621f2844bb4480e4429bf83b3a6fafca82e6c6",
                 "shasum": ""
             },
             "require": {
-                "nette/utils": "^3.0",
-                "php": ">=7.1"
+                "nette/utils": "^3.1",
+                "php": ">=7.4"
             },
             "require-dev": {
                 "nette/bootstrap": "^3.0",
@@ -297,8 +290,8 @@
                     "homepage": "https://github.com/accgit"
                 }
             ],
-            "description": "Simple utilities for string and array.",
-            "time": "2020-06-18T06:38:28+00:00"
+            "description": "String and array tools for the Nette Framework",
+            "time": "2020-07-02T08:10:56+00:00"
         },
         {
             "name": "latte/latte",
@@ -1005,20 +998,19 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "ea2c8e8d6439f0a4e3cd3431c572b51a8131539b"
+                "reference": "7051954c534cebafd650efe8b145ac75b223cb66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/ea2c8e8d6439f0a4e3cd3431c572b51a8131539b",
-                "reference": "ea2c8e8d6439f0a4e3cd3431c572b51a8131539b",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/7051954c534cebafd650efe8b145ac75b223cb66",
+                "reference": "7051954c534cebafd650efe8b145ac75b223cb66",
                 "shasum": ""
             },
             "require": {
-                "ext-tokenizer": "*",
                 "nette/utils": "^2.4.2 || ^3.0",
                 "php": ">=7.1"
             },
@@ -1066,7 +1058,7 @@
                 "php",
                 "scaffolding"
             ],
-            "time": "2020-05-26T16:32:45+00:00"
+            "time": "2020-06-19T14:31:47+00:00"
         },
         {
             "name": "nette/robot-loader",
@@ -1324,22 +1316,22 @@
         },
         {
             "name": "tracy/tracy",
-            "version": "v2.7.5",
+            "version": "v3.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/tracy.git",
-                "reference": "95b1c6e35d61df8ef91a4633ba3cf835d2d47e5e"
+                "reference": "e0536d880af85ba795413537c323064141b7dda6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/tracy/zipball/95b1c6e35d61df8ef91a4633ba3cf835d2d47e5e",
-                "reference": "95b1c6e35d61df8ef91a4633ba3cf835d2d47e5e",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/e0536d880af85ba795413537c323064141b7dda6",
+                "reference": "e0536d880af85ba795413537c323064141b7dda6",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-session": "*",
-                "php": ">=7.1"
+                "php": ">=7.2"
             },
             "conflict": {
                 "nette/di": "<3.0"
@@ -1359,7 +1351,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -1367,7 +1359,7 @@
                     "src"
                 ],
                 "files": [
-                    "src/Tracy/shortcuts.php"
+                    "src/Tracy/functions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1393,22 +1385,22 @@
                 "nette",
                 "profiler"
             ],
-            "time": "2020-05-17T09:50:45+00:00"
+            "time": "2020-05-20T11:57:15+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.29",
+            "version": "0.12.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "9771daaf6b95c6313b908d0bcdee0afcd51f838a"
+                "reference": "d03863f504c8432b3de4d1881f73f6acb8c0e67c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9771daaf6b95c6313b908d0bcdee0afcd51f838a",
-                "reference": "9771daaf6b95c6313b908d0bcdee0afcd51f838a",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d03863f504c8432b3de4d1881f73f6acb8c0e67c",
+                "reference": "d03863f504c8432b3de4d1881f73f6acb8c0e67c",
                 "shasum": ""
             },
             "require": {
@@ -1437,7 +1429,21 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2020-06-14T14:10:59+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpstan",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-01T11:57:52+00:00"
         },
         {
             "name": "phpstan/phpstan-nette",
@@ -1506,11 +1512,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "tracy/tracy": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

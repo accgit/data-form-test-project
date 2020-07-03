@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Module\Web;
 
-use App\Data\AddressFormData;
-use App\Data\CountryFormData;
-use App\Data\UserFormData;
+use App\Data\AddressData;
+use App\Data\CountryData;
+use App\Data\UserData;
 use App\Entity\AddressEntity;
 use App\Entity\CountryEntity;
 use App\Entity\UserEntity;
@@ -16,115 +16,104 @@ use Nette\Application\UI\Presenter;
 use Repository\AddressRepository;
 use Repository\CountryRepository;
 use Repository\UserRepository;
-use Tracy\Debugger;
+use Tracy\Dumper;
 
 
 final class WebPresenter extends Presenter
 {
 	use TranslatorAdapter;
 
-	private UserRepository $userRepository;
-	private AddressRepository $addressRepository;
-	private CountryRepository $countryRepository;
+	/** @inject */
+	public UserRepository $userRepository;
 
-	private UserEntity $userEntity;
-	private AddressEntity $addressEntity;
-	private CountryEntity $countryEntity;
+	/** @inject */
+	public UserEntity $userEntity;
 
+	/** @inject */
+	public AddressRepository $addressRepository;
 
-	public function __construct(
-		UserRepository $userRepository,
-		AddressRepository $addressRepository,
-		CountryRepository $countryRepository,
+	/** @inject */
+	public AddressEntity $addressEntity;
 
-		UserEntity $userEntity,
-		AddressEntity $addressEntity,
-		CountryEntity $countryEntity
-	)
-	{
-		parent::__construct();
-		$this->userRepository = $userRepository;
-		$this->addressRepository = $addressRepository;
-		$this->countryRepository = $countryRepository;
+	/** @inject */
+	public CountryRepository $countryRepository;
 
-		$this->userEntity = $userEntity;
-		$this->addressEntity = $addressEntity;
-		$this->countryEntity = $countryEntity;
-	}
+	/** @inject */
+	public CountryEntity $countryEntity;
+
+	/** form country items */
+	private array $countryItems;
+
 
 	protected function createComponentForm()
 	{
 		$form = new Form;
-
-		$form->addText(UserFormData::NAME, 'name');
+		$form->addText(UserData::NAME, 'name');
 
 		$address = $form->addContainer('address');
-		$address->addText(AddressFormData::STREET, 'street')
-			->addRule(Form::MAX_LENGTH, null, AddressFormData::STREET_LENGTH);
+		$address->addText(AddressData::STREET, 'street')
+			->addRule(Form::MAX_LENGTH, null, AddressData::STREET_LENGTH);
 
-		$address->addText(AddressFormData::CITY, 'city');
-		$address->addText(AddressFormData::ZIP, 'zip');
+		$address->addText(AddressData::CITY, 'city');
+		$address->addText(AddressData::ZIP, 'zip');
 
-		$countryItems = [];
-		foreach ($this->countryRepository->all()->fetchAll() as $countryItem)
+		/** @var CountryEntity $item */
+		foreach ($this->countryRepository->all()->fetchAll() as $item)
 		{
-			$countryItems[$countryItem['countryId']] = $countryItem['name'];
+			$items[$item->countryId] = $item->name;
+			$this->countryItems = $items;
 		}
 
 		$country = $address->addContainer('country');
-		$country->addSelect(CountryFormData::COUNTRY_ID, null, $countryItems);
+		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems);
 
 		$form->addSubmit('send', 'Send');
-		$form->onSuccess[] = function ($form, UserFormData $data) {
+		$form->onSuccess[] = function ($form, UserData $data) {
+
+			Dumper::$theme = 'dark';
+			Dumper::dump($data);
 
 			// Instance AddressFormData
 			$address = $data->address;
-			Debugger::barDump($address);
+			Dumper::dump($address);
 
 			// Instance CountryFormData
 			$country = $address->country;
-			Debugger::barDump($country);
+			Dumper::dump($country);
 
-			/* save data by array ----------------------------------------------------------------------------------- */
+			/* save address data ------------------------------------------------------------------------------------ */
 
-			// Save address data.
-			$addressData = [
-				AddressFormData::STREET => $address->street,
-				AddressFormData::CITY => $address->city,
-				AddressFormData::ZIP => $address->zip,
-				AddressFormData::COUNTRY_ID => $country->countryId
-			];
+			$address->offsetUnset('country');
+			$address->offsetSet($address::COUNTRY_ID, $country->countryId);
 
-			unset($address->country);
 			$addressRepository = $this->addressRepository;
-			$addressRepository->put($addressData);
+			$addressRepository->put($address->toArray());
 
-			// Save user data.
-			$userData = [
-				UserFormData::NAME => $data->name,
-				UserFormData::ADDRESS_ID => $addressRepository->getInsertedId(),
-			];
-			$this->userRepository->put($userData);
+			/* save user data --------------------------------------------------------------------------------------- */
 
-			/* save data by entity ---------------------------------------------------------------------------------- */
+			$data->offsetUnset('address');
+			$data->addressId = $addressRepository->getInsertedId();
+			$this->userRepository->put($data->toArray());
 
-			// Save address data.
+			/* save address data by entity -------------------------------------------------------------------------- */
+
 			$addressEntity = $this->addressEntity;
-			$addressEntity->setStreet($address->street);
-			$addressEntity->setCity($address->city);
-			$addressEntity->setZip($address->zip);
-			$addressEntity->setCountryId($country->countryId);
+			$addressEntity->street = $address->street;
+			$addressEntity->city = $address->city;
+			$addressEntity->zip = $address->zip;
+			$addressEntity->countryId = $country->countryId;
 
-			//$addressRepository->put($addressEntity->getModify());
+			$addressRepository->put($addressEntity->toArray());
 
-			// Save user data.
+			/* save user data by entity ----------------------------------------------------------------------------- */
+
 			$userEntity = $this->userEntity;
-			$userEntity->setName($data->name);
-			$userEntity->setAddressId($addressRepository->getInsertedId());
+			$userEntity->name = $data->name;
+			$userEntity->addressId = $addressRepository->getInsertedId();
 
-			//$this->userRepository->put($userEntity->getModify());
+			$this->userRepository->put($userEntity->toArray());
 
-			$this->redirect('this');
+			//$this->redirect('this');
 		};
 		return $form;
 	}

@@ -18,6 +18,7 @@
 		"drago-ex/bootstrap": "^1.0",
 		"drago-ex/translator": "^1.0",
 		"drago-ex/database": "^1.0",
+		"drago-ex/utils": "^1.0",
 		"dg/composer-cleaner": "^2.1"
 	},
 	"require-dev": {
