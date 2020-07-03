@@ -38,9 +38,6 @@ final class WebPresenter extends Presenter
 	/** @inject */
 	public CountryRepository $countryRepository;
 
-	/** @inject */
-	public CountryEntity $countryEntity;
-
 	/** form country items */
 	private array $countryItems;
 
