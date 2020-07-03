@@ -52,7 +52,7 @@ final class WebPresenter extends Presenter
 			->addRule(Form::MAX_LENGTH, null, AddressData::STREET_LENGTH);
 
 		$address->addText(AddressData::CITY, 'city');
-		$address->addText(AddressData::ZIP, 'zip');
+		$address->addInteger(AddressData::ZIP, 'zip');
 
 		/** @var CountryEntity $item */
 		foreach ($this->countryRepository->all()->fetchAll() as $item)

@@ -17,12 +17,12 @@ final class AddressData extends \Drago\Utils\ExtraArrayHash
 	const CITY = 'city';
 	const CITY_LENGTH = 255;
 	const ZIP = 'zip';
-	const ZIP_LENGTH = 255;
+	const ZIP_LENGTH = 11;
 
 	public int $addressId;
 	public CountryData $country;
 	public int $countryId;
 	public string $street;
 	public string $city;
-	public string $zip;
+	public int $zip;
 }

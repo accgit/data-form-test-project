@@ -4,98 +4,40 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-class AddressEntity extends \Drago\Database\Entity
+final class AddressEntity extends \Drago\Utils\ExtraArrayHash
 {
-	public const TABLE = 'address';
+	use \Nette\SmartObject;
+
+	const TABLE = 'address';
+	const ADDRESS_ID = 'addressId';
+	const COUNTRY_ID = 'countryId';
+	const STREET = 'street';
+	const CITY = 'city';
+	const ZIP = 'zip';
 
 	/**
-	 * Column autoIncrement = 1
-	 * Column length = 11
-	 * Column type = int
+	 * Column autoIncrement 1
+	 * Column length 11
 	 */
 	public int $addressId;
 
 	/**
-	 * Column length = 11
-	 * Column type = int
+	 * Column length 11
 	 */
 	public int $countryId;
 
 	/**
-	 * Column length = 255
-	 * Column type = varchar
+	 * Column length 255
 	 */
 	public string $street;
 
 	/**
-	 * Column length = 255
-	 * Column type = varchar
+	 * Column length 255
 	 */
 	public string $city;
 
 	/**
-	 * Column length = 255
-	 * Column type = varchar
+	 * Column length 11
 	 */
-	public string $zip;
-
-
-	public function getAddressId(): ?int
-	{
-		return $this->addressId;
-	}
-
-
-	public function setAddressId(int $addressId)
-	{
-		$this['addressId'] = $addressId;
-	}
-
-
-	public function getCountryId(): int
-	{
-		return $this->countryId;
-	}
-
-
-	public function setCountryId(int $countryId)
-	{
-		$this['countryId'] = $countryId;
-	}
-
-
-	public function getStreet(): string
-	{
-		return $this->street;
-	}
-
-
-	public function setStreet(string $street)
-	{
-		$this['street'] = $street;
-	}
-
-
-	public function getCity(): string
-	{
-		return $this->city;
-	}
-
-
-	public function setCity(string $city)
-	{
-		$this['city'] = $city;
-	}
-
-
-	public function getZip(): string
-	{
-		return $this->zip;
-	}
-
-
-	public function setZip(string $zip)
-	{
-		$this['zip'] = $zip;
-	}
+	public int $zip;
 }

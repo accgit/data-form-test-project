@@ -4,61 +4,28 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-class UserEntity extends \Drago\Database\Entity
+final class UserEntity extends \Drago\Utils\ExtraArrayHash
 {
-	public const TABLE = 'user';
+	use \Nette\SmartObject;
+
+	const TABLE = 'user';
+	const USER_ID = 'userId';
+	const ADDRESS_ID = 'addressId';
+	const NAME = 'name';
 
 	/**
-	 * Column length = 11
-	 * Column type = int
+	 * Column autoIncrement 1
+	 * Column length 11
 	 */
 	public int $userId;
 
 	/**
-	 * Column length = 11
-	 * Column type = int
+	 * Column length 11
 	 */
 	public int $addressId;
 
 	/**
-	 * Column length = 255
-	 * Column type = varchar
+	 * Column length 255
 	 */
 	public string $name;
-
-
-	public function getUserId(): int
-	{
-		return $this->userId;
-	}
-
-
-	public function setUserId(int $userId)
-	{
-		$this['userId'] = $userId;
-	}
-
-
-	public function getAddressId(): int
-	{
-		return $this->addressId;
-	}
-
-
-	public function setAddressId(int $addressId)
-	{
-		$this['addressId'] = $addressId;
-	}
-
-
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-
-	public function setName(string $name)
-	{
-		$this['name'] = $name;
-	}
 }

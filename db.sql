@@ -11,7 +11,7 @@ CREATE TABLE `address` (
   `countryId` int(11) NOT NULL,
   `street` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `city` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `zip` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `zip` int(11) NOT NULL,
   PRIMARY KEY (`addressId`),
   KEY `countryId` (`countryId`),
   CONSTRAINT `address_ibfk_2` FOREIGN KEY (`countryId`) REFERENCES `country` (`countryId`)
@@ -37,4 +37,4 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- 2020-06-18 12:26:55
+-- 2020-07-03 10:14:05

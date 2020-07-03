@@ -4,44 +4,22 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-class CountryEntity extends \Drago\Database\Entity
+final class CountryEntity extends \Drago\Utils\ExtraArrayHash
 {
-	public const TABLE = 'country';
+	use \Nette\SmartObject;
+
+	const TABLE = 'country';
+	const COUNTRY_ID = 'countryId';
+	const NAME = 'name';
 
 	/**
-	 * Column autoIncrement = 1
-	 * Column length = 11
-	 * Column type = int
+	 * Column autoIncrement 1
+	 * Column length 11
 	 */
 	public int $countryId;
 
 	/**
-	 * Column length = 255
-	 * Column type = varchar
+	 * Column length 255
 	 */
 	public string $name;
-
-
-	public function getCountryId(): ?int
-	{
-		return $this->countryId;
-	}
-
-
-	public function setCountryId(int $countryId)
-	{
-		$this['countryId'] = $countryId;
-	}
-
-
-	public function getName(): string
-	{
-		return $this->name;
-	}
-
-
-	public function setName(string $name)
-	{
-		$this['name'] = $name;
-	}
 }
