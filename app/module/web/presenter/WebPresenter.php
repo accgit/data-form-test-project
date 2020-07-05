@@ -11,11 +11,13 @@ use App\Entity\AddressEntity;
 use App\Entity\CountryEntity;
 use App\Entity\UserEntity;
 use Drago\Localization\TranslatorAdapter;
+use Exception;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 use Repository\AddressRepository;
 use Repository\CountryRepository;
 use Repository\UserRepository;
+use Tracy\Debugger;
 use Tracy\Dumper;
 
 
@@ -41,24 +43,31 @@ final class WebPresenter extends Presenter
 	/** form country items */
 	private array $countryItems;
 
+	/** select */
+	public string $change = '';
+
 
 	protected function createComponentForm()
 	{
 		$form = new Form;
 		$form->addText(UserData::NAME, 'name')
-			->addRule(Form::MAX_LENGTH, null, UserData::NAME_LENGTH);
+			->addRule(Form::MAX_LENGTH, null, UserData::NAME_LENGTH)
+			->setRequired();
 
 		/* Address container ---------------------------------------------------------------------------------------- */
 
 		$address = $form->addContainer('address');
 		$address->addText(AddressData::STREET, 'street')
-			->addRule(Form::MAX_LENGTH, null, AddressData::STREET_LENGTH);
+			->addRule(Form::MAX_LENGTH, null, AddressData::STREET_LENGTH)
+			->setRequired();
 
 		$address->addText(AddressData::CITY, 'city')
-			->addRule(Form::MAX_LENGTH, null, AddressData::CITY_LENGTH);
+			->addRule(Form::MAX_LENGTH, null, AddressData::CITY_LENGTH)
+			->setRequired();
 
 		$address->addInteger(AddressData::ZIP, 'zip')
-			->addRule(Form::MAX_LENGTH, null, AddressData::ZIP_LENGTH);
+			->addRule(Form::MAX_LENGTH, null, AddressData::ZIP_LENGTH)
+			->setRequired();
 
 		/* country items -------------------------------------------------------------------------------------------- */
 
@@ -75,53 +84,94 @@ final class WebPresenter extends Presenter
 		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems);
 
 		$form->addSubmit('send', 'Send');
-		$form->onSuccess[] = function ($form, UserData $data) {
+		$form->onSuccess[] = function (Form $form, UserData $data) {
 
-			Dumper::$theme = 'dark';
-			Dumper::dump($data);
+			//Dumper::$theme = 'dark';
+			//Dumper::dump($data);
 
 			// Instance AddressFormData
 			$address = $data->address;
-			Dumper::dump($address);
+			//Dumper::dump($address);
 
 			// Instance CountryFormData
 			$country = $address->country;
-			Dumper::dump($country);
+			//Dumper::dump($country);
 
-			/* save address data ------------------------------------------------------------------------------------ */
+			try {
 
-			$address->offsetUnset('country');
-			$address->offsetSet($address::COUNTRY_ID, $country->countryId);
+				/** @var UserEntity $userName */
+				$userName = $this->userRepository
+					->discover('name', $data->name)
+					->fetch();
 
-			$addressRepository = $this->addressRepository;
-			$addressRepository->put($address->toArray());
+				if ($userName) {
+					throw new Exception('This name exists.', 1);
+				}
 
-			/* save user data --------------------------------------------------------------------------------------- */
+				/* save address data -------------------------------------------------------------------------------- */
 
-			$data->offsetUnset('address');
-			$data->addressId = $addressRepository->getInsertedId();
-			$this->userRepository->put($data->toArray());
+				$address->offsetUnset('country');
+				$address->offsetSet($address::COUNTRY_ID, $country->countryId);
 
-			/* save address data by entity -------------------------------------------------------------------------- */
+				$addressRepository = $this->addressRepository;
+				$addressRepository->put($address->toArray());
 
-			$addressEntity = $this->addressEntity;
-			$addressEntity->street = $address->street;
-			$addressEntity->city = $address->city;
-			$addressEntity->zip = $address->zip;
-			$addressEntity->countryId = $country->countryId;
+				/* save user data ----------------------------------------------------------------------------------- */
 
-			$addressRepository->put($addressEntity->toArray());
+				$data->offsetUnset('address');
+				$data->addressId = $addressRepository->getInsertedId();
+				$this->userRepository->put($data->toArray());
 
-			/* save user data by entity ----------------------------------------------------------------------------- */
+				/* save address data by entity ---------------------------------------------------------------------- */
 
-			$userEntity = $this->userEntity;
-			$userEntity->name = $data->name;
-			$userEntity->addressId = $addressRepository->getInsertedId();
+				$addressEntity = $this->addressEntity;
+				$addressEntity->street = $address->street;
+				$addressEntity->city = $address->city;
+				$addressEntity->zip = $address->zip;
+				$addressEntity->countryId = $country->countryId;
 
-			$this->userRepository->put($userEntity->toArray());
+				//$addressRepository->put($addressEntity->toArray());
+
+				/* save user data by entity ------------------------------------------------------------------------- */
+
+				$userEntity = $this->userEntity;
+				$userEntity->name = $data->name;
+				$userEntity->addressId = $addressRepository->getInsertedId();
+
+				//$this->userRepository->put($userEntity->toArray());
+				$form->reset();
+				if ($this->isAjax()) {
+					$this->flashMessage('The form was sent.');
+					$this->redrawControl('factory');
+					$this->redrawControl('message');
+				}
+
+			} catch (Exception $e) {
+				if ($e->getCode() === 1) {
+					if ($this->isAjax()) {
+						$this->flashMessage('This name exists.');
+						$this->redrawControl('message');
+					}
+				}
+			}
 
 			//$this->redirect('this');
 		};
 		return $form;
+	}
+
+
+	public function handleChange()
+	{
+		if ($this->isAjax()) {
+			$this->change = 'Chosen';
+			$this->redrawControl('change');
+		}
+	}
+
+
+	public function renderDefault()
+	{
+		$this->template->change = $this->change;
 	}
 }

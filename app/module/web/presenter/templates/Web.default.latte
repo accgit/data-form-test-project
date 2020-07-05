@@ -3,5 +3,49 @@
 
 {* website content *}
 {block content}
-	{control form}
+	{snippet factory}
+		{form form, class => 'ajax'}
+
+			<ul n:snippet="errors" n:if="$form->hasErrors()" class="form-errors">
+				<li n:foreach="$form->errors as $error">{$error}</li>
+			</ul>
+
+			<div>
+				{label name /}
+				{input name}
+			</div>
+
+			{formContainer address}
+
+				<div>
+					{label street /}
+					{input street}
+				</div>
+
+				<div>
+					{label city /}
+					{input city}
+				</div>
+
+				<div>
+					{label zip /}
+					{input zip}
+				</div>
+
+				{formContainer country}
+
+					<div>
+						{label countryId /}
+						{input countryId}
+					</div>
+
+					<div if="{$change}" n:snippet="change">
+						<p>{$change}</p>
+					</div>
+
+				{/formContainer}
+			{/formContainer}
+			{input send}
+		{/form}
+	{/snippet}
 {/block}

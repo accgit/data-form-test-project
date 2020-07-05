@@ -9,7 +9,39 @@
 </head>
 
 <body>
+
+	{* flash message *}
+	{snippet message}
+		<div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+	{/snippet}
+
 	{* content block *}
 	{include content|indent:1}
+
+
+	<script src="{$basePath}/node_modules/jquery/dist/jquery.js"></script>
+	<script src="{$basePath}/node_modules/nette-forms/src/assets/netteForms.js"></script>
+	<script src="{$basePath}/node_modules/nette.ajax.js/nette.ajax.js"></script>
+	<script src="{$basePath}/node_modules/live-form-validation/live-form-validation.js"></script>
+
+	<script>
+		$(function() {
+			LiveForm.setOptions({
+				messageErrorClass: 'form-errors-live',
+				messageErrorPrefix: '',
+				wait: 500
+			});
+			$.nette.ext('change', {
+				load: function() {
+					$('#frm-form-address-country-countryId').off('change').on('change', function() {
+						$.nette.ajax({
+							url: {link change!}
+						});
+					});
+				}
+			});
+			$.nette.init();
+		});
+	</script>
 </body>
 </html>
