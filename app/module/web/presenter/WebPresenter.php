@@ -81,7 +81,8 @@ final class WebPresenter extends Presenter
 		/* country container ---------------------------------------------------------------------------------------- */
 
 		$country = $address->addContainer('country');
-		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems);
+		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems)
+			->setPrompt('---');
 
 		$form->addSubmit('send', 'Send');
 		$form->onSuccess[] = function (Form $form, UserData $data) {
