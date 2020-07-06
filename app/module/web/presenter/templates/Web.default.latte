@@ -3,49 +3,122 @@
 
 {* website content *}
 {block content}
-	{snippet factory}
-		{form form, class => 'ajax'}
 
-			<ul n:snippet="errors" n:if="$form->hasErrors()" class="form-errors">
-				<li n:foreach="$form->errors as $error">{$error}</li>
-			</ul>
+	{* title*}
+	<p class="display-4 mb-4" style="font-size: 2em;">Example Nette AJAX Modal</p>
 
-			<div>
-				{label name /}
-				{input name}
+	{* hyperlink for open modal *}
+	<a href="#" class="my-modal btn btn-info">Send message</a>
+
+	{* modal *}
+	{snippet modal}
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+
+					{* modal header *}
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					{snippet factory}
+						{form form, class => 'ajax'}
+
+							{* modal body *}
+							<div class="modal-body">
+
+								<ul n:snippet="errors" n:if="$form->hasErrors()" class="form-errors">
+									<li n:foreach="$form->errors as $error">{$error}</li>
+								</ul>
+
+								<div class="form-group">
+									{label name, class => "col-form-label" /}
+									{input name, class => "form-control"}
+								</div>
+
+								{formContainer address}
+									<div class="form-group">
+										{label street, class => "col-form-label" /}
+										{input street, class => "form-control"}
+									</div>
+
+									<div>
+										{label city, class => "col-form-label" /}
+										{input city, class => "form-control"}
+									</div>
+
+									<div class="form-group">
+										{label zip, class =>"col-form-label" /}
+										{input zip, class => "form-control"}
+									</div>
+
+									{formContainer country}
+										<div class="form-group">
+											{label countryId, class => "col-form-label" /}
+											{input countryId, class => "form-control select"}
+										</div>
+									{/formContainer}
+								{/formContainer}
+							</div>
+
+							{* modal footer *}
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								{input send, class => 'btn btn-primary'}
+							</div>
+						{/form}
+					{/snippet}
+				</div>
 			</div>
-
-			{formContainer address}
-
-				<div>
-					{label street /}
-					{input street}
-				</div>
-
-				<div>
-					{label city /}
-					{input city}
-				</div>
-
-				<div>
-					{label zip /}
-					{input zip}
-				</div>
-
-				{formContainer country}
-
-					<div>
-						{label countryId /}
-						{input countryId}
-					</div>
-
-					<div if="{$change}" n:snippet="change">
-						<p>{$change}</p>
-					</div>
-
-				{/formContainer}
-			{/formContainer}
-			{input send}
-		{/form}
+		</div>
 	{/snippet}
+{/block}
+
+{* modal on bootstrap 4 *}
+{block js}
+	<script>
+		$(function () {
+			$.nette.ext('nette.modal.click', {
+				load: function() {
+					$('.my-modal').off('click').on('click', function() {
+						$.nette.ajax({
+							url: {link modal!}
+						});
+					});
+				}
+			});
+			$.nette.ext('nette.modal', {
+				success: function (payload) {
+
+					// Run the modal window with the command.
+					if (payload.modal === 'run') {
+
+						// Disable closing the modal after clicking outside it.
+						$('#exampleModal').modal({
+							backdrop: 'static',
+							keyboard: false
+						});
+
+						// Plugin select.
+						$('.select').select2({
+							width: '100%',
+							style: 'height: 80px',
+							data: payload.data
+						});
+
+						// Exits the modal with the command.
+					} else if (payload.modal === 'close') {
+						$('#exampleModal').modal('hide');
+
+						// Deletion of inserted classes after calling a modal.
+						$('body').removeClass('modal-open');
+						$('.modal-backdrop').remove();
+					}
+				}
+			});
+		});
+	</script>
 {/block}

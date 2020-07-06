@@ -4,6 +4,27 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{$basePath}/node_modules/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="{$basePath}/node_modules/select2/dist/css/select2.css">
+
+	<style>
+		.select2-container
+		.select2-selection--single {
+			height: 38px;
+		}
+
+		.select2-container--default
+		.select2-selection--single
+		.select2-selection__rendered {
+			line-height: 34px;
+		}
+
+		.select2-container--default
+		.select2-selection--single
+		.select2-selection__arrow {
+			height: 34px;
+		}
+	</style>
 
 	<title>{include subtitle|stripHtml|firstUpper} &bull; Title</title>
 </head>
@@ -16,29 +37,26 @@
 	{/snippet}
 
 	{* content block *}
-	{include content|indent:1}
+	<div class="p-2">
+		{include content|indent:1}
+	</div>
 
 
 	<script src="{$basePath}/node_modules/jquery/dist/jquery.js"></script>
+	<script src="{$basePath}/node_modules/select2/dist/js/select2.js"></script>
+	<script src="{$basePath}/node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 	<script src="{$basePath}/node_modules/nette-forms/src/assets/netteForms.js"></script>
 	<script src="{$basePath}/node_modules/nette.ajax.js/nette.ajax.js"></script>
+	<script src="{$basePath}/www/js/nette.spinner.js"></script>
 	<script src="{$basePath}/node_modules/live-form-validation/live-form-validation.js"></script>
 
+	{block js}{/block}
 	<script>
 		$(function() {
 			LiveForm.setOptions({
 				messageErrorClass: 'form-errors-live',
 				messageErrorPrefix: '',
 				wait: 500
-			});
-			$.nette.ext('change', {
-				load: function() {
-					$('#frm-form-address-country-countryId').off('change').on('change', function() {
-						$.nette.ajax({
-							url: {link change!}
-						});
-					});
-				}
 			});
 			$.nette.init();
 		});

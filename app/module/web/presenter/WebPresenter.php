@@ -43,9 +43,6 @@ final class WebPresenter extends Presenter
 	/** form country items */
 	private array $countryItems;
 
-	/** select */
-	public string $change = '';
-
 
 	protected function createComponentForm()
 	{
@@ -163,17 +160,11 @@ final class WebPresenter extends Presenter
 	}
 
 
-	public function handleChange()
+	public function handleModal(): void
 	{
 		if ($this->isAjax()) {
-			$this->change = 'Chosen';
-			$this->redrawControl('change');
+			$this->payload->modal = 'run';
+			$this->redrawControl('modal');
 		}
-	}
-
-
-	public function renderDefault()
-	{
-		$this->template->change = $this->change;
 	}
 }
