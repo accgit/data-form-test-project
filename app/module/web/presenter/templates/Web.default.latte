@@ -126,6 +126,11 @@
 							$('.czech').removeClass('d-none');
 							break;
 					}
+
+					// Plugin select.
+					$('.select').select2({
+						width: '100%',
+					});
 				}
 			});
 			$.nette.ext('nette.modal', {
@@ -140,6 +145,10 @@
 							keyboard: false
 						});
 
+						// Plugin select.
+						$('.select').select2({
+							width: '100%',
+						});
 
 						// Exits the modal with the command.
 					} else if (payload.modal === 'close') {

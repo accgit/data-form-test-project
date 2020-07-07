@@ -233,6 +233,7 @@ final class WebPresenter extends Presenter
 		/** @var SelectBox $country */
 		$country = $form['country-countryId'];
 		$country->setItems($this->countryItems);
+		$country->setDisabled(false);
 		if ($this->isAjax()) {
 			$this->payload->data = $val;
 			$this->redrawControl('city_name');
