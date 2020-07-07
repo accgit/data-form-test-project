@@ -39,6 +39,16 @@
 									{input name, class => "form-control"}
 								</div>
 
+								<div>
+									{label city_select, class => "col-form-label" /}
+									{input city_select, class => "form-control change"}
+								</div>
+
+								<div class="d-none other">
+									{label city_name, class => "col-form-label" /}
+									{input city_name, class => "form-control change"}
+								</div>
+
 								{formContainer address}
 									<div class="form-group">
 										{label street, class => "col-form-label" /}
@@ -56,10 +66,12 @@
 									</div>
 
 									{formContainer country}
-										<div class="form-group">
-											{label countryId, class => "col-form-label" /}
-											{input countryId, class => "form-control select"}
-										</div>
+										{snippet city_name}
+											<div class="form-group d-none czech">
+												{label countryId, class => "col-form-label" /}
+												{input countryId, class => "form-control select"}
+											</div>
+										{/snippet}
 									{/formContainer}
 								{/formContainer}
 							</div>
@@ -90,6 +102,32 @@
 					});
 				}
 			});
+			$.nette.ext('nette.modal.city', {
+				load: function() {
+					$('.change').off('change').on('change', function() {
+						const value = $('.change option:selected');
+						$.nette.ajax({
+							url: {link modalChange!},
+							data: {
+								val: value.text()
+							}
+						});
+					});
+				},
+				success: function (payload) {
+					switch (payload.data) {
+						case 'Other':
+							$('.other').removeClass('d-none');
+							$('.czech').addClass('d-none');
+							break;
+
+						case 'Czech':
+							$('.other').addClass('d-none');
+							$('.czech').removeClass('d-none');
+							break;
+					}
+				}
+			});
 			$.nette.ext('nette.modal', {
 				success: function (payload) {
 
@@ -102,11 +140,6 @@
 							keyboard: false
 						});
 
-						// Plugin select.
-						$('.select').select2({
-							width: '100%',
-							data: payload.data
-						});
 
 						// Exits the modal with the command.
 					} else if (payload.modal === 'close') {

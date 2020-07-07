@@ -8,14 +8,17 @@ use App\Data\AddressData;
 use App\Data\CountryData;
 use App\Data\UserData;
 use App\Entity\AddressEntity;
+use App\Entity\CityEntity;
 use App\Entity\CountryEntity;
 use App\Entity\UserEntity;
 use Drago\Localization\TranslatorAdapter;
 use Exception;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
+use Nette\Forms\Controls\SelectBox;
 use Nette\Security\AuthenticationException;
 use Repository\AddressRepository;
+use Repository\CityRepository;
 use Repository\CountryRepository;
 use Repository\UserRepository;
 use Tracy\Debugger;
@@ -40,6 +43,12 @@ final class WebPresenter extends Presenter
 
 	/** @inject */
 	public CountryRepository $countryRepository;
+
+	/** @inject */
+	public CityEntity $cityEntity;
+
+	/** @inject */
+	public CityRepository $cityRepository;
 
 	/** form country items */
 	private array $countryItems;
@@ -69,6 +78,20 @@ final class WebPresenter extends Presenter
 			->addRule(Form::MAX_LENGTH, null, AddressData::ZIP_LENGTH)
 			->setRequired();
 
+		/* city ----------------------------------------------------------------------------------------------------- */
+
+		$cityItems = [];
+
+		/** @var CityEntity $item */
+		foreach ($this->cityRepository->all()->fetchAll() as $item)
+		{
+			$cityItems[$item->idCity] = $item->city_name;
+		}
+
+		$form->addSelect('city_select', null, $cityItems);
+		$form->addText('city_name', 'city name')
+			->setDisabled();
+
 		/* country items -------------------------------------------------------------------------------------------- */
 
 		/** @var CountryEntity $item */
@@ -83,7 +106,7 @@ final class WebPresenter extends Presenter
 		$country = $address->addContainer('country');
 		$country->addSelect(CountryData::COUNTRY_ID, null, $this->countryItems)
 			->setPrompt('---')
-			->setRequired();
+			->setDisabled();
 
 		$form->addSubmit('send', 'Send');
 		$form->onSuccess[] = function (Form $form, UserData $data) {
@@ -192,5 +215,33 @@ final class WebPresenter extends Presenter
 			$this->payload->modal = 'run';
 			$this->redrawControl('modal');
 		}
+	}
+
+
+	public function handleModalChange(?string $val)
+	{
+		/** @var Form $form */
+		$form = $this['form-address'];
+
+		/** @var CountryEntity $item */
+		foreach ($this->countryRepository->all()->fetchAll() as $item)
+		{
+			$items[$item->countryId] = $item->name;
+			$this->countryItems = $items;
+		}
+
+		/** @var SelectBox $country */
+		$country = $form['country-countryId'];
+		$country->setItems($this->countryItems);
+		if ($this->isAjax()) {
+			$this->payload->data = $val;
+			$this->redrawControl('city_name');
+		}
+	}
+
+
+	public function renderDefault()
+	{
+		$this->template->getLatte()->addProvider('formsStack', [$this['form-address-country']]);
 	}
 }
