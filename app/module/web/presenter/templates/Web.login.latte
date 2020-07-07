@@ -1,0 +1,15 @@
+{* subtitle page *}
+{block subtitle}{_'Page subtitle'}{/block}
+
+{* website content *}
+{block content}
+
+	{* title*}
+	<p class="display-4 mb-4" style="font-size: 2em;">Login</p>
+	{if !$user->isLoggedIn()}
+		{control login}
+		{else}
+		<p>User is logged as: {$user->id}</p>
+	{/if}
+{/block}
+

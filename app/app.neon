@@ -22,6 +22,12 @@ di:
 	debugger: yes
 
 
+services:
+	authenticator: Nette\Security\SimpleAuthenticator([
+			john: 123456
+		])
+
+
 # application extensions
 extensions:
 	- Drago\Localization\DI\TranslatorExtension(%appDir%/locale)

@@ -14,6 +14,7 @@ use Drago\Localization\TranslatorAdapter;
 use Exception;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
+use Nette\Security\AuthenticationException;
 use Repository\AddressRepository;
 use Repository\CountryRepository;
 use Repository\UserRepository;
@@ -47,9 +48,11 @@ final class WebPresenter extends Presenter
 	protected function createComponentForm()
 	{
 		$form = new Form;
-		$form->addText(UserData::NAME, 'name')
-			->addRule(Form::MAX_LENGTH, null, UserData::NAME_LENGTH)
-			->setRequired();
+		if (!$this->user->isLoggedIn()) {
+			$form->addText(UserData::NAME, 'name')
+				->addRule(Form::MAX_LENGTH, null, UserData::NAME_LENGTH)
+				->setRequired();
+		}
 
 		/* Address container ---------------------------------------------------------------------------------------- */
 
@@ -95,6 +98,10 @@ final class WebPresenter extends Presenter
 			// Instance CountryFormData
 			$country = $address->country;
 			//Dumper::dump($country);
+
+			if ($this->user->isLoggedIn()) {
+				$data->name = $this->user->id;
+			}
 
 			try {
 
@@ -155,6 +162,25 @@ final class WebPresenter extends Presenter
 			}
 
 			//$this->redirect('this');
+		};
+		return $form;
+	}
+
+
+	protected function createComponentLogin()
+	{
+		$form = new Form;
+		$form->addText('username');
+		$form->addPassword('password');
+		$form->addSubmit('login');
+		$form->onSuccess[] = function (Form $form, $values) {
+			try {
+				$this->user->login($values['username'], $values['password']);
+				$this->redirect('this');
+
+			} catch (AuthenticationException $e) {
+				$this->flashMessage('User not found.');
+			}
 		};
 		return $form;
 	}
