@@ -16,6 +16,7 @@ use Exception;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
 use Nette\Forms\Controls\SelectBox;
+use Nette\Forms\Controls\TextInput;
 use Nette\Security\AuthenticationException;
 use Repository\AddressRepository;
 use Repository\CityRepository;
@@ -233,7 +234,13 @@ final class WebPresenter extends Presenter
 		/** @var SelectBox $country */
 		$country = $form['country-countryId'];
 		$country->setItems($this->countryItems);
-		$country->setDisabled(false);
+
+		if ($val === 'Czech') {
+			$country->setDisabled(false);
+			$country->setRequired();
+
+		}
+
 		if ($this->isAjax()) {
 			$this->payload->data = $val;
 			$this->redrawControl('city_name');
